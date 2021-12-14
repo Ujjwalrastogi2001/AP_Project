@@ -7,7 +7,7 @@
 
 <AnchorPane prefHeight="769.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fitHeight="776.0" fitWidth="583.0" layoutX="-1.0" layoutY="-1.0" pickOnBounds="true">
+      <ImageView id="bgimage" fitHeight="776.0" fitWidth="583.0" layoutX="-1.0" layoutY="-1.0" pickOnBounds="true">
          <image>
             <Image url="@../../../background1.jpg" />
          </image>
@@ -17,32 +17,32 @@
             <Image url="@../../../board.jpg" />
          </image>
       </ImageView>
-      <ImageView id="purple" fitHeight="41.0" fitWidth="61.0" layoutY="597.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="bluepawn" fitHeight="41.0" fitWidth="61.0" layoutY="597.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../bluepawn-removebg-preview.png" />
          </image>
       </ImageView>
-      <ImageView id="red" fitHeight="41.0" fitWidth="32.0" layoutX="28.0" layoutY="597.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="greenpawn" fitHeight="41.0" fitWidth="32.0" layoutX="28.0" layoutY="597.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../greenpawn-removebg-preview.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="51.0" fitWidth="56.0" layoutY="562.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="uparrow" fitHeight="51.0" fitWidth="56.0" layoutY="562.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../uparrow-removebg-preview(1).png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="70.0" fitWidth="166.0" layoutX="89.0" layoutY="667.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="player1dim" fitHeight="70.0" fitWidth="166.0" layoutX="89.0" layoutY="667.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../payer1dim.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="78.0" fitWidth="144.0" layoutX="351.0" layoutY="670.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView  id="player2light" fitHeight="78.0" fitWidth="144.0" layoutX="351.0" layoutY="670.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../player2light.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="68.0" fitWidth="77.0" layoutX="251.0" layoutY="668.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="dice5" fitHeight="68.0" fitWidth="77.0" layoutX="251.0" layoutY="668.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../dice5.png" />
          </image>
@@ -50,7 +50,47 @@
             <Bloom />
          </effect>
       </ImageView>
-      <ImageView fitHeight="93.0" fitWidth="93.0" layoutX="243.0" layoutY="595.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView id="dice1" fitHeight="68.0" fitWidth="77.0" layoutX="251.0" layoutY="668.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../dice1.png" />
+         </image>
+         <effect>
+            <Bloom />
+         </effect>
+      </ImageView>
+      <ImageView id="dice2" fitHeight="68.0" fitWidth="77.0" layoutX="251.0" layoutY="668.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../dice2.png" />
+         </image>
+         <effect>
+            <Bloom />
+         </effect>
+      </ImageView>
+      <ImageView id="dice3" fitHeight="68.0" fitWidth="77.0" layoutX="251.0" layoutY="668.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../dice3.png" />
+         </image>
+         <effect>
+            <Bloom />
+         </effect>
+      </ImageView>
+      <ImageView id="dice4" fitHeight="68.0" fitWidth="77.0" layoutX="251.0" layoutY="668.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../dice4.png" />
+         </image>
+         <effect>
+            <Bloom />
+         </effect>
+      </ImageView>
+      <ImageView id="dice6" fitHeight="68.0" fitWidth="77.0" layoutX="251.0" layoutY="668.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../dice6.png" />
+         </image>
+         <effect>
+            <Bloom />
+         </effect>
+      </ImageView>
+      <ImageView id="downarrow" fitHeight="93.0" fitWidth="93.0" layoutX="243.0" layoutY="595.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../downArrow-removebg-preview.png" />
          </image>
