@@ -56,20 +56,22 @@ public class HelloController {
             player2turn.setVisible(true);
             player1turn.setVisible(false);
             blue.move(rollDice());
+            System.out.println("Position of blue: "+blue.getPosition());
             turnTracker = "green";
         }
         else if(turnTracker=="green") {
             player1turn.setVisible(true);
             player2turn.setVisible(false);
             green.move(rollDice());
+            System.out.println("Position of green: "+green.getPosition());
             turnTracker = "blue";
         }
 
     }
     public void initialize(){
         turnTracker="blue";
-        blue=new player(bluepawn,"blue");
-        green = new player(greenpawn,"green");
+        blue=new player(bluepawn,"blue",-2,538);
+        green = new player(greenpawn,"green",10,538);
     }
     int rollDice(){
         int dice;
@@ -129,14 +131,21 @@ public class HelloController {
     }
 }
 class player{
-    public static final int startX=12;
-    public static final int startY=547;
-    public static final int onestepx=58;
-    public static final int onestepy=60;
+    int floor=1;
+    final int startX;
+    final int startY;
+    int currx;
+    int curry;
+    public static final int onestepx=60;
+    public static final int onestepy=58;
     boolean opened;
     ImageView token;
     String color;
-    player(ImageView token, String color){
+    player(ImageView token, String color, int startX , int startY){
+        this.startX=startX;
+        this.startY=startY;
+        currx=startX;
+        curry=startY;
         opened=false;
         this.token=token;
         this.color=color;
@@ -147,7 +156,24 @@ class player{
             token.setLayoutX(startX);
             opened=true;
         }
+        else{
+            if(opened) {
+                currx=currx + dice * (onestepx - 1);
+                token.setLayoutX(currx);
 
+            }
+        }
+
+    }
+    int getPosition(){
+        int num;
+        int Xposition=(int)(token.getLayoutX())/58+1;
+        System.out.println("currx: "+token.getLayoutX());
+        int Yposition=11-((int)(token.getLayoutY())/55+1);
+        if(Yposition%2==0)
+            num=(Yposition-1)*10+(11-Xposition);
+        else num=(Yposition-1)*10+Xposition;
+        return num;
     }
 
 }
