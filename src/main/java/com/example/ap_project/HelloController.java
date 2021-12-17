@@ -2,6 +2,7 @@ package com.example.ap_project;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
@@ -46,9 +47,15 @@ public class HelloController {
 
     @FXML
     private ImageView uparrow;
-    Random rand= new Random();
+    public player blue;
     @FXML
     void roll(MouseEvent event) {
+        blue.move(rollDice());
+    }
+    public void initialize(){
+        blue=new player(bluepawn,"blue");
+    }
+    int rollDice(){
         int dice;
         double a = Math.random()*(6)+1;
         dice=(int)a;
@@ -102,5 +109,23 @@ public class HelloController {
                 dice4.setVisible(false);
                 break;
         }
+        return dice;
     }
+}
+class player{
+    boolean opened;
+    ImageView token;
+    String color;
+    player(ImageView token, String color){
+        opened=false;
+        this.token=token;
+        this.color=color;
+    };
+    void move(int index){
+        if(!opened){
+            token.setTranslateY(-50);
+            opened=true;
+        }
+    }
+
 }
