@@ -65,6 +65,7 @@ public class HelloController {
             green.move(rollDice());
             System.out.println("Position of green: "+green.getPosition());
             turnTracker = "blue";
+
         }
 
     }
@@ -138,6 +139,8 @@ class player{
     int curry;
     public static final int onestepx=60;
     public static final int onestepy=58;
+    public static int endX=0;
+    public static int endY=0;
     boolean opened;
     ImageView token;
     String color;
@@ -149,6 +152,8 @@ class player{
         opened=false;
         this.token=token;
         this.color=color;
+        endX=startX+10*onestepx;
+        endY=startY+10*onestepy;
     };
     void move(int dice){
         if(!opened && dice==1){
@@ -158,9 +163,19 @@ class player{
         }
         else{
             if(opened) {
-                currx=currx + dice * (onestepx - 1);
-                token.setLayoutX(currx);
-
+                System.out.println("condition1");
+                if(floor%2==0) currx=currx-dice*(onestepx-1);
+                else
+                    currx = currx + dice * (onestepx - 1);
+                if(currx>endX || currx<startX){
+                    System.out.println("condition1");
+                    floor++;
+                    if(floor%2==0)
+                        currx=endX-(currx-endX)+onestepx;
+                    else
+                        currx=2*startX-(currx)-onestepx;
+                }
+                token.setLayoutY(curry+onestepy);
             }
         }
 
