@@ -1,14 +1,25 @@
 package com.example.ap_project;
 
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Random;
 
 public class HelloController {
+    private Stage stage;
+    private Scene scene;
+    private Parent root;
     @FXML
     private ImageView bluepawn;
 
@@ -50,6 +61,23 @@ public class HelloController {
     public player green;
 
     public String turnTracker;
+
+    @FXML
+    void frontToBoard(MouseEvent event) throws IOException {
+        Parent root= FXMLLoader.load(getClass().getResource("board.fxml"));
+        stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+        scene=new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+    @FXML
+    public void boardToFront(MouseEvent event) throws IOException {
+        Parent root= FXMLLoader.load(getClass().getResource("front.fxml"));
+        stage=(Stage)((Node)event.getSource()).getScene().getWindow();
+        scene=new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
     @FXML
     void roll(MouseEvent event) {
         if(turnTracker=="blue") {
@@ -97,6 +125,7 @@ public class HelloController {
     }
 }
 class player{
+
     int floor=1;    final int startX;   final int startY;   int currx;  int curry;  public static final int onestepx=60;
     public static final int onestepy=58;   public static int endX=0;    public static int endY=0;   boolean opened;
     ImageView token;    String color;
