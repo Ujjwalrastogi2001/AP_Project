@@ -14,6 +14,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class HelloController {
@@ -60,6 +61,9 @@ public class HelloController {
     public player blue;
     public player green;
 
+    ArrayList<snake> snakes=new ArrayList<>();
+    ArrayList<ladder> ladders=new ArrayList<>();
+
     public String turnTracker;
 
     @FXML
@@ -99,6 +103,39 @@ public class HelloController {
         turnTracker="blue";
         blue=new player(bluepawn,"blue",-2,538);
         green = new player(greenpawn,"green",10,538);
+        snakes.add(new snake(47,5,358,306,238,538));
+        snakes.add(new snake(29,9,478,422,478,538));
+        snakes.add(new snake(38,15,118,364,298,480));
+        snakes.add(new snake(97,25,178,16,238,422));
+        snakes.add(new snake(53,33,418,248,418,364));
+        snakes.add(new snake(62,37,58,190,178,364));
+        snakes.add(new snake(86,54,298,74,358,248));
+        snakes.add(new snake(92,70,478,16,538,190));
+
+            blue.setSnakes(snakes);green.setSnakes(snakes);
+
+        System.out.println("here   "+snakes.size());
+            ladders.add(new ladder(2,23,58,538,118,422));
+            ladders.add(new ladder(8,34,418,538,358,364));
+            ladders.add(new ladder(20,77,-2,480,178,132));
+            ladders.add(new ladder(32,68,478,364,418,190));
+            ladders.add(new ladder(41,79,-2,306,58,132));
+            ladders.add(new ladder(74,88,358,132,418,74));
+            ladders.add(new ladder(82,100,58,74,-2,16));
+            ladders.add(new ladder(85,95,238,74,298,16));
+
+            blue.setLadders(ladders);green.setLadders(ladders);
+
+        for(int i=0;i<ladders.size();i++){
+            System.out.println(ladders.get(i).getStart()+" "+ladders.get(i).getEnd()+" "+ladders.get(i));
+        }
+        System.out.println();
+        for(int i=0;i<snakes.size();i++){
+           // System.out.print(snakes.get(i).getStart()+" ");
+        }
+
+
+
     }
     public void diceVisibility(boolean a,boolean b,boolean c,boolean d,boolean e,boolean f){
         dice1.setVisible(a);dice2.setVisible(b);dice3.setVisible(c);dice4.setVisible(d);dice5.setVisible(e);dice6.setVisible(f);
@@ -126,6 +163,9 @@ public class HelloController {
 }
 class player{
 
+    ArrayList<snake> snakes=new ArrayList<>();
+    ArrayList<ladder> ladders=new ArrayList<>();
+
     int floor=1;    final int startX;   final int startY;   int currx;  int curry;  public static final int onestepx=60;
     public static final int onestepy=58;   public static int endX=0;    public static int endY=0;   boolean opened;
     ImageView token;    String color;
@@ -136,10 +176,31 @@ class player{
                 endX=startX+10*onestepx;endY=startY+10*onestepy;
     }
     void move(int dice){
+        for(int i=0;i<ladders.size();i++){
+            System.out.print(ladders.get(i).getStart()+" ");
+        }
+        System.out.println();
+        for(int i=0;i<snakes.size();i++){
+            System.out.print(snakes.get(i).getStart()+" ");
+        }
+        System.out.println();
         if(!opened && dice==1) {moveByOne(); return;}
         else if(!opened && dice!=1) {return;}
         for(int i=0;i<dice;i++) moveByOne();
+        int posn=getPosition();
+        for(int i=0;i<ladders.size();i++){
+            ladder l=ladders.get(i);
+            if(posn==l.getStart()){token.setLayoutX(l.getEndX());token.setLayoutY(l.getEndY());floor=(l.getEnd()-1)/10+1;currx=l.getEndX();curry=l.getEndY();
+                System.out.println("floor:"+floor);break;}
+        }
+        for(int i=0;i<snakes.size();i++){
+            snake s=snakes.get(i);
+            if(posn==s.getStart()){token.setLayoutX(s.getEndX());token.setLayoutY(s.getEndY());floor=(s.getEnd()-1)/10+1;currx=s.getEndX();curry=s.getEndY();
+                System.out.println("floor:"+floor);break;}
+        }
+
         System.out.println("position "+color+" " +getPosition());
+
     }
     void moveByOne(){
         if(!opened){
@@ -175,4 +236,25 @@ class player{
         else num=(Yposition-1)*10+Xposition;
         return num;
     }
+    void setLadders(ArrayList<ladder> l){ladders.addAll(l);}
+    void setSnakes(ArrayList<snake> s){snakes.addAll(s);}
+}
+
+class ladder{
+    private int start,end,startX,startY,endX,endY;
+    ladder(int start,int end,int startX,int startY,int endX,int endY){
+        this.start=start;this.end=end;this.startX=startX;this.startY=startY;this.endX=endX;this.endY=endY;
+    }
+    public int getStart(){return start;}    public int getEnd(){return end;}
+    public int getStartX(){return startX;}  public int getStartY(){return startY;}
+    public int getEndX(){return endX;}  public int getEndY(){return endY;}
+}
+class snake{
+    private int start,end,startX,startY,endX,endY;
+    snake(int start,int end,int startX,int startY,int endX,int endY){
+        this.start=start;this.end=end;this.startX=startX;this.startY=startY;this.endX=endX;this.endY=endY;
+    }
+    public int getStart(){return start;}    public int getEnd(){return end;}
+    public int getStartX(){return startX;}  public int getStartY(){return startY;}
+    public int getEndX(){return endX;}  public int getEndY(){return endY;}
 }
