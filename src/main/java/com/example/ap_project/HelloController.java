@@ -111,20 +111,16 @@ public class HelloController {
         snakes.add(new snake(62,37,58,190,178,364));
         snakes.add(new snake(86,54,298,74,358,248));
         snakes.add(new snake(92,70,478,16,538,190));
-
-            blue.setSnakes(snakes);green.setSnakes(snakes);
-
-        System.out.println("here   "+snakes.size());
-            ladders.add(new ladder(2,23,58,538,118,422));
-            ladders.add(new ladder(8,34,418,538,358,364));
-            ladders.add(new ladder(20,77,-2,480,178,132));
-            ladders.add(new ladder(32,68,478,364,418,190));
-            ladders.add(new ladder(41,79,-2,306,58,132));
-            ladders.add(new ladder(74,88,358,132,418,74));
-            ladders.add(new ladder(82,100,58,74,-2,16));
-            ladders.add(new ladder(85,95,238,74,298,16));
-
-            blue.setLadders(ladders);green.setLadders(ladders);
+        blue.setSnakes(snakes);green.setSnakes(snakes);
+        ladders.add(new ladder(2,23,58,538,118,422));
+        ladders.add(new ladder(8,34,418,538,358,364));
+        ladders.add(new ladder(20,77,-2,480,178,132));
+        ladders.add(new ladder(32,68,478,364,418,190));
+        ladders.add(new ladder(41,79,-2,306,58,132));
+        ladders.add(new ladder(74,88,358,132,418,74));
+        ladders.add(new ladder(82,100,58,74,-2,16));
+        ladders.add(new ladder(85,95,238,74,298,16));
+        blue.setLadders(ladders);green.setLadders(ladders);
 
         for(int i=0;i<ladders.size();i++){
             System.out.println(ladders.get(i).getStart()+" "+ladders.get(i).getEnd()+" "+ladders.get(i));
@@ -176,30 +172,22 @@ class player{
                 endX=startX+10*onestepx;endY=startY+10*onestepy;
     }
     void move(int dice){
-        for(int i=0;i<ladders.size();i++){
-            System.out.print(ladders.get(i).getStart()+" ");
-        }
-        System.out.println();
-        for(int i=0;i<snakes.size();i++){
-            System.out.print(snakes.get(i).getStart()+" ");
-        }
-        System.out.println();
+
         if(!opened && dice==1) {moveByOne(); return;}
         else if(!opened && dice!=1) {return;}
+        if(getPosition()+dice>100) return;
         for(int i=0;i<dice;i++) moveByOne();
         int posn=getPosition();
         for(int i=0;i<ladders.size();i++){
             ladder l=ladders.get(i);
-            if(posn==l.getStart()){token.setLayoutX(l.getEndX());token.setLayoutY(l.getEndY());floor=(l.getEnd()-1)/10+1;currx=l.getEndX();curry=l.getEndY();
-                System.out.println("floor:"+floor);break;}
+            if(posn==l.getStart()){token.setLayoutX(l.getEndX());token.setLayoutY(l.getEndY());floor=(l.getEnd()-1)/10+1;currx=l.getEndX();curry=l.getEndY();break;}
         }
         for(int i=0;i<snakes.size();i++){
             snake s=snakes.get(i);
-            if(posn==s.getStart()){token.setLayoutX(s.getEndX());token.setLayoutY(s.getEndY());floor=(s.getEnd()-1)/10+1;currx=s.getEndX();curry=s.getEndY();
-                System.out.println("floor:"+floor);break;}
+            if(posn==s.getStart()){token.setLayoutX(s.getEndX());token.setLayoutY(s.getEndY());floor=(s.getEnd()-1)/10+1;currx=s.getEndX();curry=s.getEndY();break;}
         }
 
-        System.out.println("position "+color+" " +getPosition());
+        //System.out.println("position "+color+" " +getPosition());
 
     }
     void moveByOne(){
