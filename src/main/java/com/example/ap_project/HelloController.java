@@ -58,7 +58,11 @@ public class HelloController {
     private ImageView player2turn;
     @FXML
     private ImageView uparrow;
-    public player blue;
+    @FXML
+    private static ImageView p1win;
+    @FXML
+    private static ImageView p2win;
+    public  player blue;
     public player green;
 
     ArrayList<snake> snakes=new ArrayList<>();
@@ -133,6 +137,10 @@ public class HelloController {
 
 
     }
+    public static void win(String s){
+        if(s=="blue"){p1win.setVisible(true);p2win.setVisible(false);}
+        if(s=="green"){p1win.setVisible(false);p2win.setVisible(false);}
+    }
     public void diceVisibility(boolean a,boolean b,boolean c,boolean d,boolean e,boolean f){
         dice1.setVisible(a);dice2.setVisible(b);dice3.setVisible(c);dice4.setVisible(d);dice5.setVisible(e);dice6.setVisible(f);
     }
@@ -156,6 +164,7 @@ public class HelloController {
         }
         return dice;
     }
+
 }
 class player{
     ArrayList<snake> snakes=new ArrayList<>();
@@ -174,18 +183,11 @@ class player{
         if(!opened && dice==1) {moveByOne(dice); return;}
         else if(!opened && dice!=1) {return;}
         if(getPosition()+dice>100) return;
-//        ArrayList<TranslateTransition> t = new ArrayList<>();
-//        for(int i=0;i<dice;i++){
-//            System.out.println("calling move by one");
-//            t.add(moveByOne(dice));
-//        }
-//        for(int i=0;i<dice;i++) {
-//            System.out.println(t.get(i)); }
-//        AtomicInteger j = new AtomicInteger();
+
         Timeline t1=new Timeline((new KeyFrame(Duration.millis(500),e->{
             moveByOne(dice).play();
         })));
-        //transition play
+        //Transition play
         t1.setCycleCount(dice);
         t1.play();
         int posn=getPosition();
@@ -212,11 +214,6 @@ class player{
             token.setLayoutY(startY);   token.setLayoutX(startX);
             opened=true;
             transition= new TranslateTransition();
-////            transition.setFromX(prevX);
-//            transition.setByY(onestepy);
-//            transition.setCycleCount(1);
-//            transition.setAutoReverse(false);
-//            curry = curry+onestepy;
         }
         else{
             int block=getPosition();
@@ -227,30 +224,18 @@ class player{
             }
 
             if(getPosition()==100)  {
-                //TODO new scene fro winning player.
                 System.out.println("Player "+ color+" wins the game");
+                HelloController.win(color);
             }
             System.out.println("Transition playing.....");
             transition= new TranslateTransition(Duration.millis(500),token);
-//            transition.setFromX(prevX);
+
             transition.setToX(currx);
             transition.setCycleCount(1);
             transition.setAutoReverse(false);
 
 
-//            token.setLayoutX(currx);
-//            token.setLayoutY(curry);
 
-////         token.setLayoutY(curry);
-//            transition.setOnFinished(new EventHandler<ActionEvent>() {
-//                @Override
-//                public void handle(ActionEvent actionEvent) {
-////                    token.setLayoutX(currx);
-////                    token.setLayoutY(curry);
-////                    System.out.println("currx :  "+currx+" cuury:"+curry);
-//                    return;
-//                }
-//            });
         }
         return transition;
     }
