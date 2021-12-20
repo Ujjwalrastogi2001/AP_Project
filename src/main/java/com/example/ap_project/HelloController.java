@@ -1,5 +1,6 @@
 package com.example.ap_project;
 
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -158,7 +160,7 @@ public class HelloController {
     }
 }
 class player{
-
+    TranslateTransition transition;
     ArrayList<snake> snakes=new ArrayList<>();
     ArrayList<ladder> ladders=new ArrayList<>();
 
@@ -172,12 +174,18 @@ class player{
                 endX=startX+10*onestepx;endY=startY+10*onestepy;
     }
     void move(int dice){
-
-        if(!opened && dice==1) {moveByOne(); return;}
+        if(!opened && dice==1) {moveByOne(dice); return;}
         else if(!opened && dice!=1) {return;}
         if(getPosition()+dice>100) return;
-        for(int i=0;i<dice;i++) moveByOne();
+        ArrayList<TranslateTransition> t = new ArrayList<>();
+        for(int i=0;i<dice;i++){
+            System.out.println("calling move by one");
+            t.add(moveByOne(dice));
+        }
+        for(int i=0;i<dice;i++) {
+            t.get(i).play();}
         int posn=getPosition();
+
         for(int i=0;i<ladders.size();i++){
             ladder l=ladders.get(i);
             if(posn==l.getStart()){token.setLayoutX(l.getEndX());token.setLayoutY(l.getEndY());floor=(l.getEnd()-1)/10+1;currx=l.getEndX();curry=l.getEndY();break;}
@@ -190,7 +198,10 @@ class player{
         //System.out.println("position "+color+" " +getPosition());
 
     }
-    void moveByOne(){
+    TranslateTransition moveByOne(int dice){
+        int prevX, prevY;
+        prevX = currx;
+        prevY = curry;
         if(!opened){
             token.setLayoutY(startY);   token.setLayoutX(startX);   opened=true;
         }
@@ -205,13 +216,23 @@ class player{
             if(getPosition()==100)  {
                 //TODO the player wins;
             }
-
-
-            token.setLayoutX(currx);
-            token.setLayoutY(curry);
-
+            System.out.println("Transition playing.....");
+            transition= new TranslateTransition(Duration.millis(500),token);
+            transition.setFromX(prevX);
+            transition.setToX(currx);
+            transition.setCycleCount(1);
+            transition.setAutoReverse(false);
+//            transition.setOnFinished(new EventHandler<ActionEvent>() {
+//                @Override
+//                public void handle(ActionEvent actionEvent) {
+////                    token.setLayoutX(currx);
+////                    token.setLayoutY(curry);
+////                    System.out.println("currx :  "+currx+" cuury:"+curry);
+//                    return;
+//                }
+//            });
         }
-
+        return transition;
     }
     int getPosition(){
         int num;
