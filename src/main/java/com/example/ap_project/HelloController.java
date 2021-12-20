@@ -1,15 +1,13 @@
 package com.example.ap_project;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -17,7 +15,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class HelloController {
     private Stage stage;
@@ -160,7 +158,6 @@ public class HelloController {
     }
 }
 class player{
-    TranslateTransition transition;
     ArrayList<snake> snakes=new ArrayList<>();
     ArrayList<ladder> ladders=new ArrayList<>();
 
@@ -177,13 +174,20 @@ class player{
         if(!opened && dice==1) {moveByOne(dice); return;}
         else if(!opened && dice!=1) {return;}
         if(getPosition()+dice>100) return;
-        ArrayList<TranslateTransition> t = new ArrayList<>();
-        for(int i=0;i<dice;i++){
-            System.out.println("calling move by one");
-            t.add(moveByOne(dice));
-        }
-        for(int i=0;i<dice;i++) {
-            t.get(i).play();}
+//        ArrayList<TranslateTransition> t = new ArrayList<>();
+//        for(int i=0;i<dice;i++){
+//            System.out.println("calling move by one");
+//            t.add(moveByOne(dice));
+//        }
+//        for(int i=0;i<dice;i++) {
+//            System.out.println(t.get(i)); }
+//        AtomicInteger j = new AtomicInteger();
+        Timeline t1=new Timeline((new KeyFrame(Duration.millis(500),e->{
+            moveByOne(dice).play();
+        })));
+        //transition play
+        t1.setCycleCount(dice);
+        t1.play();
         int posn=getPosition();
 
         for(int i=0;i<ladders.size();i++){
@@ -199,11 +203,20 @@ class player{
 
     }
     TranslateTransition moveByOne(int dice){
+        System.out.println("cury "+currx+"  "+curry);
+        TranslateTransition transition;
         int prevX, prevY;
         prevX = currx;
         prevY = curry;
         if(!opened){
-            token.setLayoutY(startY);   token.setLayoutX(startX);   opened=true;
+            token.setLayoutY(startY);   token.setLayoutX(startX);
+            opened=true;
+            transition= new TranslateTransition();
+////            transition.setFromX(prevX);
+//            transition.setByY(onestepy);
+//            transition.setCycleCount(1);
+//            transition.setAutoReverse(false);
+//            curry = curry+onestepy;
         }
         else{
             int block=getPosition();
@@ -214,14 +227,21 @@ class player{
             }
 
             if(getPosition()==100)  {
-                //TODO the player wins;
+                //TODO new scene fro winning player.
+                System.out.println("Player "+ color+" wins the game");
             }
             System.out.println("Transition playing.....");
             transition= new TranslateTransition(Duration.millis(500),token);
-            transition.setFromX(prevX);
+//            transition.setFromX(prevX);
             transition.setToX(currx);
             transition.setCycleCount(1);
             transition.setAutoReverse(false);
+
+
+//            token.setLayoutX(currx);
+//            token.setLayoutY(curry);
+
+////         token.setLayoutY(curry);
 //            transition.setOnFinished(new EventHandler<ActionEvent>() {
 //                @Override
 //                public void handle(ActionEvent actionEvent) {
