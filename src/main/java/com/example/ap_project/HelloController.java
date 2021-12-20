@@ -190,18 +190,28 @@ class player{
         //Transition play
         t1.setCycleCount(dice);
         t1.play();
-        int posn=getPosition();
+        Timeline t2=new Timeline((new KeyFrame(Duration.millis(500*(dice+1)),e->{
+            int posn=getPosition();
+            System.out.println("curr in move: "+currx+" "+curry);
+            System.out.println("posn:-----------"+posn);
 
-        for(int i=0;i<ladders.size();i++){
-            ladder l=ladders.get(i);
-            if(posn==l.getStart()){token.setLayoutX(l.getEndX());token.setLayoutY(l.getEndY());floor=(l.getEnd()-1)/10+1;currx=l.getEndX();curry=l.getEndY();break;}
-        }
-        for(int i=0;i<snakes.size();i++){
-            snake s=snakes.get(i);
-            if(posn==s.getStart()){token.setLayoutX(s.getEndX());token.setLayoutY(s.getEndY());floor=(s.getEnd()-1)/10+1;currx=s.getEndX();curry=s.getEndY();break;}
-        }
+            for(int i=0;i<ladders.size();i++){
+                ladder l=ladders.get(i);
+                if(posn==l.getStart()){token.setLayoutX(l.getEndX());token.setLayoutY(l.getEndY());floor=(l.getEnd()-1)/10+1;currx=l.getEndX();curry=l.getEndY();
+                    System.out.println("ladder chadh gai");break;}
+            }
+            for(int i=0;i<snakes.size();i++){
+                snake s=snakes.get(i);
+                if(posn==s.getStart()){token.setLayoutX(s.getEndX());token.setLayoutY(s.getEndY());floor=(s.getEnd()-1)/10+1;currx=s.getEndX();curry=s.getEndY();
+                    System.out.println("saanp kaat gaya");break;}
+            }
+            System.out.println("block:+"+getPosition());
+            //System.out.println("position "+color+" " +getPosition());
+            System.out.println("----------------------------------------------------------------------");
+        })));
+        t2.play();
 
-        //System.out.println("position "+color+" " +getPosition());
+
 
     }
     TranslateTransition moveByOne(int dice){
@@ -216,21 +226,25 @@ class player{
             transition= new TranslateTransition();
         }
         else{
+
+            transition= new TranslateTransition(Duration.millis(500),token);
             int block=getPosition();
-            if(block%10==0 && floor!=10){curry-=onestepy;   floor++;}
+            System.out.println("block:+"+block);
+            if(block%10==0 && floor!=10){curry-=onestepy;   floor++;transition.setToY(-onestepy*(floor-1));}
             else {
-                if(floor%2==0) currx-=onestepx;
-                else currx+=onestepx;
+                if(floor%2==0){ currx-=onestepx;transition.setToX(currx);}
+                else{ currx+=onestepx;transition.setToX(currx);}
             }
 
             if(getPosition()==100)  {
                 System.out.println("Player "+ color+" wins the game");
                 HelloController.win(color);
             }
+            System.out.println("block:+"+getPosition());
             System.out.println("Transition playing.....");
-            transition= new TranslateTransition(Duration.millis(500),token);
 
-            transition.setToX(currx);
+
+            //transition.setToX(currx);
             transition.setCycleCount(1);
             transition.setAutoReverse(false);
 
@@ -241,10 +255,10 @@ class player{
     }
     int getPosition(){
         int num;
-        int Xposition=(int)(token.getLayoutX())/58+1;
+        int Xposition=(int)(currx)/58+1;
 //        System.out.println("currx: "+token.getLayoutX());
-        int Yposition=11-((int)(token.getLayoutY())/55+1);
-        System.out.println("pos " +Yposition+ "  "+Xposition);
+        int Yposition=11-((int)(curry/55+1));
+        //System.out.println("pos " +Yposition+ "  "+Xposition);
         if(Yposition%2==0)
             num=(Yposition-1)*10+(11-Xposition);
         else num=(Yposition-1)*10+Xposition;
