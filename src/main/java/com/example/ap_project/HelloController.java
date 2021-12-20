@@ -174,16 +174,13 @@ class player{
                 endX=startX+10*onestepx;endY=startY+10*onestepy;
     }
     void move(int dice){
-        if(!opened && dice==1) {moveByOne(dice); return;}
+        if(!opened && dice==1) {moveByOne(); return;}
         else if(!opened && dice!=1) {return;}
         if(getPosition()+dice>100) return;
-        ArrayList<TranslateTransition> t = new ArrayList<>();
         for(int i=0;i<dice;i++){
             System.out.println("calling move by one");
-            t.add(moveByOne(dice));
+            moveByOne();
         }
-        for(int i=0;i<dice;i++) {
-            t.get(i).play();}
         int posn=getPosition();
 
         for(int i=0;i<ladders.size();i++){
@@ -198,7 +195,7 @@ class player{
         //System.out.println("position "+color+" " +getPosition());
 
     }
-    TranslateTransition moveByOne(int dice){
+    void moveByOne(){
         int prevX, prevY;
         prevX = currx;
         prevY = curry;
@@ -218,10 +215,10 @@ class player{
             }
             System.out.println("Transition playing.....");
             transition= new TranslateTransition(Duration.millis(500),token);
-            transition.setFromX(prevX);
-            transition.setToX(currx);
+            transition.setByX(60);
             transition.setCycleCount(1);
             transition.setAutoReverse(false);
+            transition.play();
 //            transition.setOnFinished(new EventHandler<ActionEvent>() {
 //                @Override
 //                public void handle(ActionEvent actionEvent) {
@@ -232,7 +229,7 @@ class player{
 //                }
 //            });
         }
-        return transition;
+
     }
     int getPosition(){
         int num;
