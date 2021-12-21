@@ -176,6 +176,9 @@ class player{
         opened=false;this.token=token;this.color=color;
         endX=startX+10*onestepx;endY=startY+10*onestepy;
     }
+    public static void isOnLadder(){
+
+    }
     void move(int dice){
         TranslateTransition moveDownArrow;
         ImageView downArrow=HelloController.getDownarrow();
