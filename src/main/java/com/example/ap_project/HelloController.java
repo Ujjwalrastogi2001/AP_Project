@@ -1,6 +1,7 @@
 package com.example.ap_project;
 
 import javafx.animation.KeyFrame;
+import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -10,12 +11,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class HelloController {
@@ -34,7 +36,8 @@ public class HelloController {
 
     @FXML
     private ImageView dice2;
-
+    @FXML
+    private Polyline polyLine;
     @FXML
     private ImageView dice3;
 
@@ -48,7 +51,7 @@ public class HelloController {
     private ImageView dice6;
 
     @FXML
-    private static ImageView downarrow;
+    private ImageView downarrow;
 
     @FXML
     private ImageView greenpawn;
@@ -61,17 +64,62 @@ public class HelloController {
     @FXML
     private ImageView uparrow;
     @FXML
-    private static ImageView p1win;
+    private ImageView p1win;
     @FXML
-    private static ImageView p2win;
+    private CubicCurve snake29part1;
+
+    @FXML
+    private CubicCurve snake29part2;
+
+    @FXML
+    private CubicCurve snake38;
+
+    @FXML
+    private CubicCurve snake47part1;
+
+    @FXML
+    private CubicCurve snake47part2;
+
+    @FXML
+    private CubicCurve snake53part1;
+
+    @FXML
+    private CubicCurve snake62part1;
+
+    @FXML
+    private CubicCurve snake62part2;
+
+    @FXML
+    private CubicCurve snake86part1;
+
+    @FXML
+    private CubicCurve snake86part2;
+
+    @FXML
+    private CubicCurve snake92part1;
+
+    @FXML
+    private CubicCurve snake92part2;
+
+    @FXML
+    private CubicCurve snake97part1;
+
+    @FXML
+    private CubicCurve snake97part2;
+
+    @FXML
+    private CubicCurve snake97part3;
+    @FXML
+    private ImageView p2win;
     private   player blue;
     private  player green;
 
     ArrayList<snake> snakes=new ArrayList<>();
     ArrayList<ladder> ladders=new ArrayList<>();
-
+    public int diceList[]=new int[]{1,6,6,6,6,5};
+    public static int count=0;
     public String turnTracker;
-
+    public TranslateTransition moveDownArrow;
 
 
     @FXML
@@ -92,33 +140,86 @@ public class HelloController {
     }
     @FXML
     void roll(MouseEvent event) {
-        if(turnTracker=="blue") {
-            player2turn.setVisible(true);   player1turn.setVisible(false);
-            blue.move(rollDice());
-            //System.out.println("Position of blue: "+blue.getPosition());
+        moveDownArrow.pause();
+        setDiceClickable(false);
+        if (turnTracker == "blue") {
+            int dice = rollDice();
+            if (blue.move(dice)) {
+                Timeline t1 = new Timeline((new KeyFrame(Duration.millis(500 * dice + 1), e -> {
+                    player2turn.setVisible(true);
+                    player1turn.setVisible(false);
+                    setDiceClickable(true);
+                    moveDownArrow.play();
+                    System.out.println("----FINAL POSITION: "+blue.getPosition());
+                })));
+                t1.play();
+            } else {
+                player2turn.setVisible(true);
+                player1turn.setVisible(false);
+                setDiceClickable(true);
+                moveDownArrow.play();
+            }
+            System.out.println("Position of blue: " + blue.getPosition());
             turnTracker = "green";
-        }
-        else if(turnTracker=="green") {
-            player1turn.setVisible(true);   player2turn.setVisible(false);
-            green.move(rollDice());
-            //System.out.println("Position of green: "+green.getPosition());
+        } else if (turnTracker == "green") {
+
+            int dice = rollDice();
+            if (green.move(dice)) {
+                Timeline t1 = new Timeline((new KeyFrame(Duration.millis(500 * dice + 2), e -> {
+                    player1turn.setVisible(true);
+                    player2turn.setVisible(false);
+                    setDiceClickable(true);
+                    moveDownArrow.play();
+                })));
+                t1.play();
+            } else {
+                player1turn.setVisible(true);
+                player2turn.setVisible(false);
+                moveDownArrow.play();
+                setDiceClickable(true);
+            }
+            System.out.println("Position of green: " + green.getPosition());
             turnTracker = "blue";
 
         }
 
+
+    }
+    @FXML
+    void findLoc(MouseEvent event){
+        System.out.println("X Coordinate: "+ event.getSceneX()+ " Y Coordinate: "+ event.getSceneY() );
     }
     public void initialize(){
         turnTracker="blue";
         blue=new player(bluepawn,"blue",-2,538);
         green = new player(greenpawn,"green",10,538);
-        snakes.add(new snake(47,5,180,236,238,538));
-        snakes.add(new snake(29,9,0,118,478,538));
-        snakes.add(new snake(38,15,-180,118,298,480));
-        snakes.add(new snake(97,25,-60,413,238,422));
-        snakes.add(new snake(53,33,0,118,418,364));
-        snakes.add(new snake(62,37,-120,178,178,364));
-        snakes.add(new snake(86,54,-60,178,358,248));
-        snakes.add(new snake(92,70,-60,178,538,190));
+        ArrayList<CubicCurve> pathList= new ArrayList<>();
+        pathList.add(snake47part1);  pathList.add(snake47part2);
+
+        snakes.add(new snake(47,5,120,236,238,538,pathList));
+        pathList.clear();
+        pathList.add(snake29part1);pathList.add(snake29part2);
+        snakes.add(new snake(29,9,0,118,478,538,pathList));
+        pathList.clear();
+        pathList.add(snake38);
+
+        snakes.add(new snake(38,15,-180,118,298,480,pathList));
+        pathList.clear();
+        pathList.add(snake97part1);pathList.add(snake97part2);pathList.add(snake97part3);
+        snakes.add(new snake(97,25,-60,413,238,422,pathList));
+        pathList.clear();
+        pathList.add(snake53part1);
+        snakes.add(new snake(53,33,0,118,418,364,pathList));
+        pathList.clear();
+        pathList.add(snake62part1);pathList.add(snake62part2);
+        snakes.add(new snake(62,37,-120,178,178,364,pathList));
+        pathList.clear();
+        pathList.add(snake86part1);pathList.add(snake86part2);
+        snakes.add(new snake(86,54,-60,178,358,248,pathList));
+        pathList.clear();
+        pathList.add(snake92part1);pathList.add(snake92part2);
+        snakes.add(new snake(92,70,-60,178,538,190,pathList));
+        pathList.clear();
         blue.setSnakes(snakes);green.setSnakes(snakes);
         ladders.add(new ladder(2,23,60,118,118,422));
         ladders.add(new ladder(8,34,-60,178,358,364));
@@ -130,8 +231,25 @@ public class HelloController {
         ladders.add(new ladder(85,95,60,59,298,16));
         blue.setLadders(ladders);green.setLadders(ladders);
 
+        moveDownArrow= new TranslateTransition(Duration.millis(800),downarrow);
+        moveDownArrow.setByY(-30);
+        moveDownArrow.setCycleCount(TranslateTransition.INDEFINITE);
+        moveDownArrow.setAutoReverse(true);
+        moveDownArrow.play();
+
+        Timeline statusChecker = new Timeline((new KeyFrame(Duration.millis(500), e -> {
+            if(blue.win){
+                win(blue.getColor());
+            }
+            else if(green.win){
+                win(green.getColor());
+            }
+        })));
+        statusChecker.setCycleCount(Timeline.INDEFINITE);
+        statusChecker.play();
     }
-    public static void win(String s){
+    public void win(String s){
+        System.out.println("---------------player win: "+ s);
         if(s=="blue"){p1win.setVisible(true);p2win.setVisible(false);}
         if(s=="green"){p1win.setVisible(false);p2win.setVisible(true);}
     }
@@ -140,7 +258,7 @@ public class HelloController {
     }
     int rollDice(){
         int dice;
-        double a = Math.random()*(6)+1;
+        double a = Math.random()*(3)+1;
         dice=(int)a;
         switch(dice){
             case 1:
@@ -158,9 +276,23 @@ public class HelloController {
         }
         return dice;
     }
-
-    public static  ImageView getDownarrow() {
-        return downarrow;
+    void setDiceClickable(boolean clickable){
+        if(clickable){
+            dice1.setOnMouseClicked(this::roll);
+            dice2.setOnMouseClicked(this::roll);
+            dice3.setOnMouseClicked(this::roll);
+            dice4.setOnMouseClicked(this::roll);
+            dice5.setOnMouseClicked(this::roll);
+            dice6.setOnMouseClicked(this::roll);
+        }
+        else {
+            dice1.setOnMouseClicked(null);
+            dice2.setOnMouseClicked(null);
+            dice3.setOnMouseClicked(null);
+            dice4.setOnMouseClicked(null);
+            dice5.setOnMouseClicked(null);
+            dice6.setOnMouseClicked(null);
+        }
     }
 }
 class player{
@@ -169,29 +301,35 @@ class player{
 
     private int floor=1;    private final int startX;   private final int startY;   private int currx;  private int curry;  private  static final int onestepx=60;
     private  static final int onestepy=58;   private  static int endX=0;    private  static int endY=0;   private boolean opened;
-    private ImageView token;    private String color;
+    private ImageView token;    private String color; boolean win;
 
     player(ImageView token, String color, int startX , int startY){
         this.startX=startX;this.startY=startY;currx=startX;curry=startY;
         opened=false;this.token=token;this.color=color;
         endX=startX+10*onestepx;endY=startY+10*onestepy;
+        win=false;
     }
-    void move(int dice){
-        TranslateTransition moveDownArrow;
-        ImageView downArrow=HelloController.getDownarrow();
-        moveDownArrow= new TranslateTransition(Duration.millis(10),downArrow);
-        moveDownArrow.setByY(-30);
-        moveDownArrow.setCycleCount(1);
-        moveDownArrow.setAutoReverse(false);
-        moveDownArrow.play();
+    String getColor(){
+        return this.color;
+    }
+    ImageView getToken(){return this.token;}
+    boolean move(int dice){
+//        TranslateTransition moveDownArrow;
+//        ImageView downArrow=HelloController.getDownarrow();
+//        moveDownArrow= new TranslateTransition(Duration.millis(10),downArrow);
+//        moveDownArrow.setByY(-30);
+//        moveDownArrow.setCycleCount(1);
+//        moveDownArrow.setAutoReverse(false);
+//        moveDownArrow.play();
         System.out.println("dice: "+dice);
-        if(!opened && dice==1) {moveByOne(); return;}
-        else if(!opened && dice!=1) {return;}
-        if(getPosition()+dice>100) return;
+        if(!opened && dice==1) {moveByOne(); return false;}
+        else if(!opened && dice!=1) {return false;}
+        if(getPosition()+dice>100) return false;
         AtomicInteger n= new AtomicInteger();
         AtomicInteger count= new AtomicInteger(-1);
         Thread thread = new Thread(){
             public void run() {
+                System.out.println("===========TOKEN2: "+token);
                 for(int i=0;i<dice;i++){
                     System.out.println("in timeline");
                     if (n.get() < dice) {
@@ -230,16 +368,36 @@ class player{
                 for(int i=0;i<snakes.size();i++){
                     snake s=snakes.get(i);
                     if(posn==s.getStart()){
-                        TranslateTransition transition= new TranslateTransition();
-                        transition.setNode(token);
-                        transition.setByX(-s.getTx());
-                        transition.setByY(s.getTy());
-                        transition.setDuration(Duration.millis(500));
-                        transition.setCycleCount(1);
-                        transition.play();
+                        AtomicInteger count= new AtomicInteger(0);
+                        ArrayList<CubicCurve> pathList= s.pathList;
+                        System.out.println("snakeee----------------------------------"+ s.pathList);
+                        Timeline animate = new Timeline((new KeyFrame(Duration.millis(300), z -> {
+                            System.out.println("---------animate Cycle count: "+count.get());
+                            System.out.println("-------------------------------"+ pathList);
+                            PathTransition transition= new PathTransition();
+                            transition.setNode(token);
+                            token.setX(token.getLayoutX());
+                            token.setY(token.getLayoutY());
+                            token.setLayoutX(0);
+                            token.setLayoutY(0);
+                            transition.setPath(s.pathList.get(count.get()));
+                            transition.setDuration(Duration.millis(1000));
+                            transition.setCycleCount(1);
+                            transition.play();
+                            count.getAndIncrement();
+                        })));
+                        animate.setCycleCount(s.pathList.size());
+                        animate.play();
                         floor=(s.getEnd()-1)/10+1;currx=s.getEndX();curry=s.getEndY();
-                        System.out.println("saanp kaat gaya"+currx+" "+curry);
+
+//                        token.setLayoutX(s.getEndX());
+//                        token.setLayoutY(-s.getEndY());
+//                        token.setX(s.getEndX());
+//                        token.setY(-s.getEndY());
+                        System.out.println("saanp kaat gaya"+token.getLayoutX()+" "+token.getLayoutY());
+                        System.out.println("find at floor : "+floor);
                         break;}
+                    System.out.println("===========TOKEN1: "+token);
                 }
                 System.out.println("block:+"+getPosition());
                 System.out.println("-------------------------------FINISH---------------------------------------");
@@ -248,8 +406,9 @@ class player{
         };
 //        thread.dice = dice;
         thread.start();
-        moveDownArrow.setAutoReverse(true);
-        moveDownArrow.play();
+//        moveDownArrow.setAutoReverse(true);
+//        moveDownArrow.play();
+        return true;
 
     }
     TranslateTransition moveByOne(){
@@ -265,14 +424,15 @@ class player{
             transition= new TranslateTransition(Duration.millis(100),token);
             int block=getPosition();
             System.out.println("block:+"+block);
-            if(block%10==0 && floor!=10){curry-=onestepy;   floor++;transition.setToY(-onestepy*(floor-1));}
+            if(block%10==0 && floor!=10){curry-=onestepy;   floor++;transition.setToY(-onestepy*(floor-1));
+                }
             else {
                 if(floor%2==0){ currx-=onestepx;transition.setToX(currx);}
                 else{ currx+=onestepx;transition.setToX(currx);}
             }
             if(getPosition()==100)  {
                 System.out.println("Player "+ color+" wins the game");
-                HelloController.win(color);
+                this.win=true;
             }
             System.out.println("block:+"+getPosition());
             transition.setCycleCount(1);
@@ -305,8 +465,13 @@ class ladder{
 }
 class snake{
     private int start,end,tx,ty,endX,endY;
-    snake(int start,int end,int tx,int ty,int endX,int endY){
+    public ArrayList<CubicCurve> pathList=new ArrayList<>();
+    snake(int start,int end,int tx,int ty,int endX,int endY,ArrayList<CubicCurve> path){
         this.start=start;this.end=end;this.tx=tx;this.ty=ty;this.endX=endX;this.endY=endY;
+        for(int i=0;i<path.size();i++){
+            pathList.add(path.get(i));
+        }
+        System.out.println("snakeee----------------------------------"+ this.pathList+"   "+pathList);
     }
     public int getStart(){return start;}    public int getEnd(){return end;}
     public int getTx(){return tx;}  public int getTy(){return ty;}

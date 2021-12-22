@@ -3,6 +3,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.CubicCurve?>
 
 <!--url for dice roll :https://tenor.com/view/roll-the-dice-gif-18953855-->
 
@@ -88,4 +89,20 @@
             <Image url="@../../../dice6.jpg" />
          </image>
       </ImageView>
+      <CubicCurve fx:id="snake38" controlX1="-42.399993896484375" controlX2="-207.99996948242188" controlY1="-14.20001220703125" controlY2="134.5999755859375" endX="8.000030517578125" endY="109.0" layoutX="290.0" layoutY="403.0" opacity="0.0" smooth="false" startX="-147.99996948242188" startY="-6.20001220703125" />
+      <CubicCurve id="snake47part2" fx:id="snake47part2" controlX1="-154.99996948242188" controlX2="-298.1999816894531" controlY1="144.19998168945312" controlY2="71.39999389648438" endX="-270.1999816894531" endY="220.20001220703125" fill="DODGERBLUE" layoutX="513.0" layoutY="339.0" opacity="0.0" startX="-206.19998168945312" startY="33.79998779296875" stroke="BLACK" />
+      <CubicCurve id="snake47part1" fx:id="snake47part1" controlX1="51.000030517578125" controlX2="77.39999389648438" controlY1="7.199981689453125" controlY2="46.399993896484375" endX="92.60000610351562" endY="28.79998779296875" fill="DODGERBLUE" layoutX="279.0" layoutY="300.0" opacity="0.0" startX="27.000030517578125" startY="64.0" stroke="BLACK" />
+      <CubicCurve id="snake29part1" fx:id="snake29part1" controlX1="-182.19998168945312" controlX2="-125.39999389648438" controlY1="26.999969482421875" controlY2="38.999969482421875" endX="-147.80001831054688" endY="62.20001220703125" fill="DODGERBLUE" layoutX="629.0" layoutY="453.0" opacity="0.0" startX="-139.79995727539062" startY="-5.800018310546875" stroke="BLACK" />
+      <CubicCurve id="snake29part2" fx:id="snake29part2" controlX1="-16.79998779296875" controlX2="-16.799957275390625" controlY1="-52.79998779296875" controlY2="-22.39996337890625" endX="-7.199981689453125" endY="-31.199951171875" fill="DODGERBLUE" layoutX="490.0" layoutY="588.0" opacity="0.0" startX="-7.20001220703125" startY="-74.39996337890625" stroke="BLACK" />
+      <CubicCurve id="snake53" fx:id="snake53part1" controlX1="-195.60000610351562" controlX2="-84.39999389648438" controlY1="42.600006103515625" controlY2="11.399993896484375" endX="-132.39999389648438" endY="105.79998779296875" fill="DODGERBLUE" layoutX="556.0" layoutY="279.0" opacity="0.0" startX="-140.39999389648438" startY="-7.0" stroke="BLACK" />
+      <CubicCurve id="snake62part1" fx:id="snake62part1" controlX1="-75.39999389648438" controlX2="-75.39999389648438" controlY1="25.79998779296875" controlY2="41.79998779296875" endX="-75.39999389648438" endY="106.60000610351562" fill="DODGERBLUE" layoutX="251.0" layoutY="215.0" opacity="0.0" startX="-152.19998168945312" stroke="BLACK" />
+      <CubicCurve id="snake62part2" fx:id="snake62part2" controlX1="-121.39999389648438" controlX2="-164.60000610351562" controlY1="22.600006103515625" controlY2="46.600006103515625" endX="-137.39999389648438" endY="55.399993896484375" fill="DODGERBLUE" layoutX="329.0" layoutY="327.0" opacity="0.0" startX="-154.19998168945312" startY="-3.800018310546875" stroke="BLACK" />
+      <CubicCurve id="snake86part1" fx:id="snake86part1" controlX1="-88.99996948242188" controlX2="-121.80001831054688" controlY1="-6.799995422363281" controlY2="79.59999084472656" endX="-128.19998168945312" endY="70.79998779296875" fill="DODGERBLUE" layoutX="467.0" layoutY="98.0" opacity="0.0" startX="-150.0" stroke="BLACK" />
+      <CubicCurve fx:id="snake86part2" controlX1="-104.80001831054688" controlX2="-132.79995727539062" controlY1="30.79998779296875" controlY2="58.0" endX="-121.60000610351562" endY="96.39999389648438" fill="DODGERBLUE" layoutX="490.0" layoutY="170.0" opacity="0.0" startX="-150.0" stroke="BLACK" />
+      <CubicCurve fx:id="snake97part1" controlX1="-191.80001831054688" controlX2="-72.60000610351562" controlY1="101.59999084472656" controlY2="7.200004577636719" endX="-99.80001831054688" endY="108.0" fill="DODGERBLUE" layoutX="341.0" layoutY="40.0" opacity="0.0" startX="-150.0" stroke="BLACK" />
+      <CubicCurve fx:id="snake97part2" controlX1="0.199981689453125" controlX2="-161.39999389648438" controlY1="43.79998779296875" controlY2="126.19998168945312" endX="-88.60000610351562" endY="191.0" fill="DODGERBLUE" layoutX="389.0" layoutY="149.0" opacity="0.0" startX="-150.0" stroke="BLACK" />
+      <CubicCurve fx:id="snake97part3" controlX1="-186.20001220703125" controlX2="-222.19998168945312" controlY1="73.19998168945312" controlY2="97.19998168945312" endX="-196.60000610351562" endY="103.60000610351562" fill="DODGERBLUE" layoutX="449.0" layoutY="346.0" opacity="0.0" startX="-150.0" stroke="BLACK" />
+      <CubicCurve fx:id="snake92part1" controlX1="-59.4000244140625" controlX2="-147.39999389648438" controlY1="-60.19999694824219" controlY2="11.799995422363281" endX="-93.0" endY="37.399993896484375" fill="DODGERBLUE" layoutX="635.0" layoutY="101.0" opacity="0.0" startX="-132.99996948242188" startY="-60.19999694824219" stroke="BLACK" />
+      <CubicCurve fx:id="snake92part2" controlX1="-159.0" controlX2="-167.0" controlY1="28.79998779296875" controlY2="42.399993896484375" endX="-145.39996337890625" endY="60.0" fill="DODGERBLUE" layoutX="689.0" layoutY="148.0" opacity="0.0" startX="-145.39996337890625" startY="-9.600006103515625" stroke="BLACK" />
+
    </children></AnchorPane>
