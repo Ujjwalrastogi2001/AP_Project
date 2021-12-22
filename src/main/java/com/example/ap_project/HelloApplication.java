@@ -9,7 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import com.example.ap_project.HelloController;
+import com.example.ap_project.SnakeAndLadder;
 
 public class HelloApplication extends Application {
 

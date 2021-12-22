@@ -1,7 +1,6 @@
 package com.example.ap_project;
 
 import javafx.animation.KeyFrame;
-import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -14,13 +13,15 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class HelloController {
+public class SnakeAndLadder {
 
     private Stage stage;
     private Scene scene;
@@ -103,12 +104,15 @@ public class HelloController {
 
     @FXML
     private CubicCurve snake97part1;
-
+    @FXML
+    private ImageView diceGif;
     @FXML
     private CubicCurve snake97part2;
-
+    @FXML
+    private ImageView menuButton;
     @FXML
     private CubicCurve snake97part3;
+    private static boolean flag=true;
     @FXML
     private ImageView p2win;
     private   player blue;
@@ -120,6 +124,7 @@ public class HelloController {
     public static int count=0;
     public String turnTracker;
     public TranslateTransition moveDownArrow;
+    public String rollPath="src/main/resources/com/example/ap_project/sounds/diceRoll.mp3";
 
 
     @FXML
@@ -131,7 +136,7 @@ public class HelloController {
         stage.show();
     }
     @FXML
-    public void boardToFront(MouseEvent event) throws IOException {
+     void boardToFront(MouseEvent event) throws IOException {
         Parent root= FXMLLoader.load(getClass().getResource("front.fxml"));
         stage=(Stage)((Node)event.getSource()).getScene().getWindow();
         scene=new Scene(root);
@@ -140,8 +145,19 @@ public class HelloController {
     }
     @FXML
     void roll(MouseEvent event) {
+        Media diceSound=new Media(new File(rollPath).toURI().toString());
+        MediaPlayer mediaPlayer= new MediaPlayer(diceSound);
+        diceGif.setVisible(true);
+        mediaPlayer.play();
+        Timeline diceMotion= new Timeline((new KeyFrame(Duration.millis(500),e ->{
+            diceGif.setVisible(false);
+            mediaPlayer.stop();
+        })));
+        diceMotion.setCycleCount(1);
+        diceMotion.play();
         moveDownArrow.pause();
         setDiceClickable(false);
+        downarrow.setVisible(false);
         if (turnTracker == "blue") {
             int dice = rollDice();
             if (blue.move(dice)) {
@@ -149,6 +165,7 @@ public class HelloController {
                     player2turn.setVisible(true);
                     player1turn.setVisible(false);
                     setDiceClickable(true);
+                    downarrow.setVisible(true);
                     moveDownArrow.play();
                     System.out.println("----FINAL POSITION: "+blue.getPosition());
                 })));
@@ -157,6 +174,7 @@ public class HelloController {
                 player2turn.setVisible(true);
                 player1turn.setVisible(false);
                 setDiceClickable(true);
+                downarrow.setVisible(true);
                 moveDownArrow.play();
             }
             System.out.println("Position of blue: " + blue.getPosition());
@@ -169,12 +187,14 @@ public class HelloController {
                     player1turn.setVisible(true);
                     player2turn.setVisible(false);
                     setDiceClickable(true);
+                    downarrow.setVisible(true);
                     moveDownArrow.play();
                 })));
                 t1.play();
             } else {
                 player1turn.setVisible(true);
                 player2turn.setVisible(false);
+                downarrow.setVisible(true);
                 moveDownArrow.play();
                 setDiceClickable(true);
             }
@@ -189,7 +209,12 @@ public class HelloController {
     void findLoc(MouseEvent event){
         System.out.println("X Coordinate: "+ event.getSceneX()+ " Y Coordinate: "+ event.getSceneY() );
     }
+    public static Timeline statusChecker;
     public void initialize(){
+        if(!flag){
+            statusChecker.stop();
+            flag=true;
+        }
         turnTracker="blue";
         blue=new player(bluepawn,"blue",-2,538);
         green = new player(greenpawn,"green",10,538);
@@ -232,17 +257,33 @@ public class HelloController {
         blue.setLadders(ladders);green.setLadders(ladders);
 
         moveDownArrow= new TranslateTransition(Duration.millis(800),downarrow);
-        moveDownArrow.setByY(-30);
+        moveDownArrow.setByY(-15);
         moveDownArrow.setCycleCount(TranslateTransition.INDEFINITE);
         moveDownArrow.setAutoReverse(true);
+
         moveDownArrow.play();
 
-        Timeline statusChecker = new Timeline((new KeyFrame(Duration.millis(500), e -> {
-            if(blue.win){
+
+
+
+
+        statusChecker = new Timeline((new KeyFrame(Duration.millis(500), e -> {
+            if(blue.getPosition()==100){
                 win(blue.getColor());
+                setDiceClickable(false);
+                boardImage.setOpacity(0.5);
+                player1turn.setOpacity(0.5);
+                player2turn.setOpacity(0.5);
+                flag=false;
+
             }
-            else if(green.win){
+            else if(green.getPosition()==100){
                 win(green.getColor());
+                setDiceClickable(false);
+                boardImage.setOpacity(0.5);
+                player1turn.setOpacity(0.5);
+                player2turn.setOpacity(0.5);
+                flag=false;
             }
         })));
         statusChecker.setCycleCount(Timeline.INDEFINITE);
@@ -250,6 +291,7 @@ public class HelloController {
     }
     public void win(String s){
         System.out.println("---------------player win: "+ s);
+
         if(s=="blue"){p1win.setVisible(true);p2win.setVisible(false);}
         if(s=="green"){p1win.setVisible(false);p2win.setVisible(true);}
     }
@@ -258,7 +300,7 @@ public class HelloController {
     }
     int rollDice(){
         int dice;
-        double a = Math.random()*(3)+1;
+        double a = Math.random()*(6)+1;
         dice=(int)a;
         switch(dice){
             case 1:
@@ -296,6 +338,9 @@ public class HelloController {
     }
 }
 class player{
+    public String climbLadder= "src/main/resources/com/example/ap_project/sounds/Ladder.mp3";
+    public String snakeBite="src/main/resources/com/example/ap_project/sounds/snake.mp3";
+    public String stepSound="src/main/resources/com/example/ap_project/sounds/oneStep.mp3";
     private ArrayList<snake> snakes=new ArrayList<>();
     private ArrayList<ladder> ladders=new ArrayList<>();
 
@@ -354,6 +399,14 @@ class player{
                 for(int i=0;i<ladders.size();i++){
                     ladder l=ladders.get(i);
                     if(posn==l.getStart()){
+                        Media ladderSound=new Media(new File(climbLadder).toURI().toString());
+                        MediaPlayer climbLadder= new MediaPlayer(ladderSound);
+                        climbLadder.play();
+                        Timeline ladder = new Timeline((new KeyFrame(Duration.millis(700), e -> {
+                            climbLadder.stop();
+                        })));
+                        ladder.setCycleCount(1);
+                        ladder.play();
                         TranslateTransition transition= new TranslateTransition();
                         transition.setNode(token);
                         transition.setByX(l.getTx());
@@ -365,49 +418,77 @@ class player{
                         System.out.println("ladder chadh gai"+currx+" "+curry);
                         System.out.println("ladder chadh gai "+ token.getLayoutX()+" "+token.getLayoutY());break;}
                 }
-                for(int i=0;i<snakes.size();i++){
-                    snake s=snakes.get(i);
-                    if(posn==s.getStart()){
-                        AtomicInteger count= new AtomicInteger(0);
-                        ArrayList<CubicCurve> pathList= s.pathList;
-                        System.out.println("snakeee----------------------------------"+ s.pathList);
-                        Timeline animate = new Timeline((new KeyFrame(Duration.millis(300), z -> {
-                            System.out.println("---------animate Cycle count: "+count.get());
-                            System.out.println("-------------------------------"+ pathList);
-                            PathTransition transition= new PathTransition();
-                            transition.setNode(token);
-                            token.setX(token.getLayoutX());
-                            token.setY(token.getLayoutY());
-                            token.setLayoutX(0);
-                            token.setLayoutY(0);
-                            transition.setPath(s.pathList.get(count.get()));
-                            transition.setDuration(Duration.millis(1000));
-                            transition.setCycleCount(1);
-                            transition.play();
-                            count.getAndIncrement();
+                for(int i=0;i<snakes.size();i++) {
+                    snake s = snakes.get(i);
+                    if (posn == s.getStart()) {
+                        Media snakeSound= new Media(new File(snakeBite).toURI().toString());
+                        MediaPlayer snakeBite= new MediaPlayer(snakeSound);
+                        snakeBite.play();
+                        Timeline snake = new Timeline((new KeyFrame(Duration.millis(700), e -> {
+                            snakeBite.stop();
                         })));
-                        animate.setCycleCount(s.pathList.size());
-                        animate.play();
-                        floor=(s.getEnd()-1)/10+1;currx=s.getEndX();curry=s.getEndY();
-
-//                        token.setLayoutX(s.getEndX());
-//                        token.setLayoutY(-s.getEndY());
-//                        token.setX(s.getEndX());
-//                        token.setY(-s.getEndY());
-                        System.out.println("saanp kaat gaya"+token.getLayoutX()+" "+token.getLayoutY());
-                        System.out.println("find at floor : "+floor);
-                        break;}
-                    System.out.println("===========TOKEN1: "+token);
+                        snake.setCycleCount(1);
+                        snake.play();
+                        TranslateTransition transition = new TranslateTransition();
+                        transition.setNode(token);
+                        transition.setByX(-s.getTx());
+                        transition.setByY(s.getTy());
+                        transition.setDuration(Duration.millis(500));
+                        transition.setCycleCount(1);
+                        transition.play();
+                        floor = (s.getEnd() - 1) / 10 + 1;
+                        currx = s.getEndX();
+                        curry = s.getEndY();
+                        System.out.println("saanp kaat gaya" + currx + " " + curry);
+                        break;
+                    }
                 }
+//                for(int i=0;i<snakes.size();i++){
+//                    snake s=snakes.get(i);
+//                    if(posn==s.getStart()){
+//                        AtomicInteger count= new AtomicInteger(0);
+//                        ArrayList<CubicCurve> pathList= s.pathList;
+//                        System.out.println("snakeee----------------------------------"+ s.pathList);
+//                        Timeline animate = new Timeline((new KeyFrame(Duration.millis(300), z -> {
+//                            System.out.println("---------animate Cycle count: "+count.get());
+//                            System.out.println("-------------------------------"+ pathList);
+//                            PathTransition transition= new PathTransition();
+//                            transition.setNode(token);
+//                            token.setX(token.getLayoutX());
+//                            token.setY(token.getLayoutY());
+//                            token.setLayoutX(-2);
+//                            token.setLayoutY(538);
+//                            transition.setPath(s.pathList.get(count.get()));
+//                            transition.setDuration(Duration.millis(1000));
+//                            transition.setCycleCount(1);
+//                            transition.play();
+//                            count.getAndIncrement();
+//                        })));
+//                        animate.setCycleCount(s.pathList.size());
+//                        animate.play();
+//                        floor=(s.getEnd()-1)/10+1;currx=s.getEndX();curry=s.getEndY();
+//                        token.setLayoutX(10);
+//                        token.setLayoutY(-10);
+////                        token.setLayoutX(s.getEndX());
+////                        token.setLayoutY(-s.getEndY());
+////                        token.setX(s.getEndX());
+////                        token.setY(-s.getEndY());
+//                        System.out.println("saanp kaat gaya"+token.getLayoutX()+" "+token.getLayoutY());
+//                        System.out.println("find at floor : "+floor);
+//                        break;}
+//                    System.out.println("===========TOKEN1: "+token);
+//                }
                 System.out.println("block:+"+getPosition());
                 System.out.println("-------------------------------FINISH---------------------------------------");
             }
+
 
         };
 //        thread.dice = dice;
         thread.start();
 //        moveDownArrow.setAutoReverse(true);
 //        moveDownArrow.play();
+
         return true;
 
     }
@@ -418,13 +499,24 @@ class player{
             token.setLayoutY(startY);   token.setLayoutX(startX);
             opened=true;
             transition= new TranslateTransition();
+
         }
         else{
-
+            Media step= new Media(new File(stepSound).toURI().toString());
+            MediaPlayer playStep = new MediaPlayer(step);
+            playStep.play();
+            Timeline playStepSound = new Timeline((new KeyFrame(Duration.millis(500), e -> {
+                playStep.stop();
+            })));
+            playStepSound.setCycleCount(1);
+            playStepSound.play();
             transition= new TranslateTransition(Duration.millis(100),token);
             int block=getPosition();
             System.out.println("block:+"+block);
-            if(block%10==0 && floor!=10){curry-=onestepy;   floor++;transition.setToY(-onestepy*(floor-1));
+            if(block%10==0 && floor!=10){
+                System.out.println("=======Previous curry: "+ token.getLayoutY());curry-=onestepy;   floor++;transition.setToY(-onestepy*(floor-1));
+
+                System.out.println("-=========New Curry: "+ token.getLayoutY());
                 }
             else {
                 if(floor%2==0){ currx-=onestepx;transition.setToX(currx);}

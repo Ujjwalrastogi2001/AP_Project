@@ -7,18 +7,8 @@
 
 <!--url for dice roll :https://tenor.com/view/roll-the-dice-gif-18953855-->
 
-<AnchorPane prefHeight="769.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ap_project.HelloController">
+<AnchorPane prefHeight="769.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.ap_project.SnakeAndLadder">
    <children>
-      <ImageView fx:id="p2win" fitHeight="386.0" fitWidth="465.0" layoutX="73.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../player2wins.jpg" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="p1win" fitHeight="386.0" fitWidth="465.0" layoutX="73.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../player1wins.jpg" />
-         </image>
-      </ImageView>
       <ImageView id="bgimage" fitHeight="778.0" fitWidth="583.0" layoutX="-1.0" pickOnBounds="true">
          <image>
             <Image url="@../../../hippolabfront.jpg" />
@@ -103,6 +93,23 @@
       <CubicCurve fx:id="snake97part2" controlX1="0.199981689453125" controlX2="-161.39999389648438" controlY1="43.79998779296875" controlY2="126.19998168945312" endX="-88.60000610351562" endY="191.0" fill="DODGERBLUE" layoutX="389.0" layoutY="149.0" opacity="0.0" startX="-150.0" stroke="BLACK" />
       <CubicCurve fx:id="snake97part3" controlX1="-186.20001220703125" controlX2="-222.19998168945312" controlY1="73.19998168945312" controlY2="97.19998168945312" endX="-196.60000610351562" endY="103.60000610351562" fill="DODGERBLUE" layoutX="449.0" layoutY="346.0" opacity="0.0" startX="-150.0" stroke="BLACK" />
       <CubicCurve fx:id="snake92part1" controlX1="-59.4000244140625" controlX2="-147.39999389648438" controlY1="-60.19999694824219" controlY2="11.799995422363281" endX="-93.0" endY="37.399993896484375" fill="DODGERBLUE" layoutX="635.0" layoutY="101.0" opacity="0.0" startX="-132.99996948242188" startY="-60.19999694824219" stroke="BLACK" />
+      <ImageView fx:id="p2win" fitHeight="386.0" fitWidth="465.0" layoutX="73.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../player2wins.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="p1win" fitHeight="386.0" fitWidth="465.0" layoutX="73.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../../../player1wins.png" />
+         </image>
+      </ImageView>
       <CubicCurve fx:id="snake92part2" controlX1="-159.0" controlX2="-167.0" controlY1="28.79998779296875" controlY2="42.399993896484375" endX="-145.39996337890625" endY="60.0" fill="DODGERBLUE" layoutX="689.0" layoutY="148.0" opacity="0.0" startX="-145.39996337890625" startY="-9.600006103515625" stroke="BLACK" />
+      <ImageView fx:id="menuButton" fitHeight="41.0" fitWidth="116.0" layoutX="130.0" layoutY="429.0" onMouseClicked="#boardToFront" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="replayButton" fitHeight="41.0" fitWidth="116.0" layoutX="296.0" layoutY="430.0" onMouseClicked="#frontToBoard" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="diceGif" fitHeight="64.0" fitWidth="64.0" layoutX="251.0" layoutY="671.0" onMouseClicked="#roll" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image  url="@diceGif.gif" />
+         </image>
+      </ImageView>
 
    </children></AnchorPane>
